@@ -1,6 +1,11 @@
 ﻿using LinusNestorson_WebbShop.Database;
+using LinusNestorson_WebbShop.Helpers;
+using LinusNestorson_WebbShop.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Linq;
 
 namespace LinusNestorson_WebbShop
 {
@@ -9,12 +14,56 @@ namespace LinusNestorson_WebbShop
         internal static void Main()
         {
             var webbshop = new WebbShopAPI();
+            var userHelper = new UserHelper();
             Seeder.GenerateData();
-            var categoryList = webbshop.GetCategories();
-            foreach (var category in categoryList)
-            {
-                Console.WriteLine(category.Name);
-            }
+
+            webbshop.Register("Bilbo", "FylkeRulez", "FylkeRulez");
+
+            //int userId = webbshop.Login("TestClient", "Codic2021");
+            //User user = userHelper.GetUser(userId);
+
+            //Console.WriteLine($"Welcome {user.Name}");
+            //Console.WriteLine(webbshop.GetBook(2));
+
+            //var categoryList = webbshop.GetCategories();
+            //foreach (var category in categoryList)
+            //{
+            //    Console.WriteLine(category.Name);
+            //}
+
+            //var bookList = webbshop.GetBooks("or");
+            //foreach (var book in bookList)
+            //{
+            //    Console.WriteLine(book.Title);
+            //}
+
+            //var authorBookList = webbshop.GetAuthors("st");
+            //foreach (var book in authorBookList)
+            //{
+            //    Console.WriteLine(book.Title);
+            //}
+
+            //webbshop.BuyBook(2, 1); //<----Lägg till någon text om att köpet var lyckat if metod == true
+            //{
+            //    using (var context = new ShopContext())
+            //    {
+            //        foreach (var user in context.Users)
+            //        {
+            //            Console.WriteLine($"User: {user.Name}");
+
+            //            var bookContext = new ShopContext();
+            //            var boughtBooks = bookContext.SoldBooks.Where(b => b.User == user).ToList();
+            //            if (boughtBooks.Count() != 0)
+            //            {
+            //                foreach (var book in boughtBooks)
+            //                {
+            //                    Console.WriteLine($"Bought: {book.Title}");
+            //                }
+            //            }
+            //        }
+
+            //    }
+            //}
 
         }
 

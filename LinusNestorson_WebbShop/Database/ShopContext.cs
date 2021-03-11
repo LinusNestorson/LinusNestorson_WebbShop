@@ -15,11 +15,6 @@ namespace LinusNestorson_WebbShop.Database
         public DbSet<Book> Books { get; set; }
         public DbSet<SoldBook> SoldBooks { get; set; }
 
-        // TODO: Skapa DbSet för users
-        // TODO: Skapar DbSet för Category
-        // TODO: Skapa DbSet för Books
-        // TODO: Skapa DbSet för Sold Books
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer($@"Server = .\SQLExpress;Database={DatabaseName};trusted_connection=true");

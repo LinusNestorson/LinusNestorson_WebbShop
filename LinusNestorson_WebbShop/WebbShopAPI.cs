@@ -15,11 +15,11 @@ namespace LinusNestorson_WebbShop
         public int Login(string username, string password)
         {
             {
-                var user = context.Users.FirstOrDefault(u => u.Name == username && u.Password == password && u.IsActive);
+                var user = context.Users.FirstOrDefault(u => u.Name == username && u.Password == password); // Lägg till && IsActive == True
                 if (user != null)
                 {
                     user.LastLogin = DateTime.Now;
-                    user.SessionTimer = DateTime.Now;
+                    user.SessionTimer = user.LastLogin.AddMinutes(15);
                     context.Users.Update(user);
                     context.SaveChanges();
                     return user.Id;
@@ -47,13 +47,76 @@ namespace LinusNestorson_WebbShop
         {
             return context.Categories.Where(c => c.Name.Contains(keyword)).ToList();
         }
-        public List<Book> GetCategory()
-        {
-            return context.Books.OrderBy(b => b.Title).ToList();
-        }
+        //public List<Book> GetCategory(string category) // S
+        //{
+        //    return context.Books.Where(c => c.CategoryId == category).OrderBy(b => b.Title).ToList();
+        //}
         public List<Book> GetAvailableBooks()
         {
             return context.Books.Where(b => b.Amount>0).OrderBy(b => b.Title).ToList();
+        }
+        public string GetBook(int bookId)
+        {
+            var book = context.Books.Include("Category").FirstOrDefault(b => b.Id == bookId);
+            return $"Book Title: {book.Title}\nAuthor: {book.Author}\nCategory: {book.Category.Name}\nPrice: {book.Price}\nAmount in stock: {book.Amount}";
+        }
+        public List<Book> GetBooks(string keyword)
+        {
+            return context.Books.Where(b => b.Title.Contains(keyword)).ToList();
+        }
+        public List<Book> GetAuthors(string keyword)
+        {
+            return context.Books.Where(b => b.Author.Contains(keyword)).ToList();
+        }
+        public bool BuyBook(int userId, int bookId) // Kontrollera denna
+        {
+            var user = context.Users.FirstOrDefault(u => u.Id == userId);
+           
+            if (user.OwnedBooks == null)
+            {
+                user.OwnedBooks = new List<SoldBook>();
+            }
+            var book = context.Books.FirstOrDefault(b => b.Id == bookId);
+
+            if (book != null)
+            {
+                var soldBook = new SoldBook() { Title = book.Title, Author = book.Author, User = user, Category = book.Category, Price = book.Price, PurchasedDate = DateTime.Now };
+                user.OwnedBooks.Add(soldBook);
+                context.Users.Update(user);
+                context.SaveChanges();
+                return true;
+            }
+            else return false;
+        }
+        public string Ping(int userId) //Implemitera i varje stycke av Main
+        {
+            var user = context.Users.FirstOrDefault(u => u.Id == userId);
+            if (DateTime.Now < user.SessionTimer)
+            {
+                user.LastLogin = DateTime.Now;
+                user.SessionTimer = user.LastLogin.AddMinutes(15);
+                context.Users.Update(user);
+                context.SaveChanges();
+                return "Pong";
+            }
+            else return string.Empty;
+
+        }
+        public bool Register(string name, string password, string verPassword)
+        {
+            var user = context.Users.FirstOrDefault(u => u.Name == name);
+            if (user == null && password == verPassword)
+            {
+                user = new User() { Name = name, Password = password };
+                context.Users.Update(user);
+                context.SaveChanges();
+                return true;
+            }
+            else if (password != verPassword)
+            {
+                return false;
+            }
+            else return false;
         }
     }
 }

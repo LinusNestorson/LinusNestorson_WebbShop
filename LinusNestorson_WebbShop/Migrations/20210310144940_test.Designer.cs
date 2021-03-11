@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LinusNestorson_WebbShop.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20210309160047_initializeDatabase")]
-    partial class initializeDatabase
+    [Migration("20210310144940_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,7 +34,7 @@ namespace LinusNestorson_WebbShop.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("Price")
@@ -57,15 +57,10 @@ namespace LinusNestorson_WebbShop.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -80,7 +75,7 @@ namespace LinusNestorson_WebbShop.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("Price")
@@ -92,10 +87,14 @@ namespace LinusNestorson_WebbShop.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("SoldBooks");
                 });
@@ -132,25 +131,31 @@ namespace LinusNestorson_WebbShop.Migrations
 
             modelBuilder.Entity("LinusNestorson_WebbShop.Models.Book", b =>
                 {
-                    b.HasOne("LinusNestorson_WebbShop.Models.Category", null)
-                        .WithMany("Books")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LinusNestorson_WebbShop.Models.Category", b =>
-                {
-                    b.HasOne("LinusNestorson_WebbShop.Models.Category", null)
-                        .WithMany("Categories")
+                    b.HasOne("LinusNestorson_WebbShop.Models.Category", "Category")
+                        .WithMany()
                         .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("LinusNestorson_WebbShop.Models.Category", b =>
+            modelBuilder.Entity("LinusNestorson_WebbShop.Models.SoldBook", b =>
                 {
-                    b.Navigation("Books");
+                    b.HasOne("LinusNestorson_WebbShop.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
 
-                    b.Navigation("Categories");
+                    b.HasOne("LinusNestorson_WebbShop.Models.User", "User")
+                        .WithMany("OwnedBooks")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LinusNestorson_WebbShop.Models.User", b =>
+                {
+                    b.Navigation("OwnedBooks");
                 });
 #pragma warning restore 612, 618
         }
