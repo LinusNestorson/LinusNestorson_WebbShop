@@ -10,7 +10,11 @@ using System.Linq;
 namespace LinusNestorson_WebbShop
 {
     class Program
-    {
+    {   
+        //TODO: Gör klart metod för AddUser()
+        //TODO: Gör alla klasser för G
+        //TODO: Gör alla klasser för VG
+        //TODO: Fixa seeder-klassen
         internal static void Main()
         {
             var webbshop = new WebbShopAPI();
@@ -30,10 +34,21 @@ namespace LinusNestorson_WebbShop
                 return; // Hur hantera detta?
             }
 
-            adminOptions.AddBookToCategory(1, 2, 3);
-            
+
+
+            //adminOptions.DeleteCatagory(1, 1);
+
+            //foreach (var book in webbshop.GetCategory(3))
+            //{
+            //    Console.WriteLine(book.Title);
+            //}
+
+            //adminOptions.UpdateCategory(1, 2, "Fantasy");
+
+            //adminOptions.AddBookToCategory(1, 2, 3);
+
             //adminOptions.DeleteBook(userId, 1);
-            
+
             //adminOptions.UpdateBook(userId, 1, "BongoBoos Äventyr", "Sunil", 579);
 
             //foreach (var user in adminOptions.FindUser(userId, "Test"))

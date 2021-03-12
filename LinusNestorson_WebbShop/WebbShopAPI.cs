@@ -48,10 +48,10 @@ namespace LinusNestorson_WebbShop
         {
             return context.Categories.Where(c => c.Name.Contains(keyword)).ToList();
         }
-        //public List<Book> GetCategory(string category) // S
-        //{
-        //    return context.Books.Where(c => c.CategoryId == category).OrderBy(b => b.Title).ToList();
-        //}
+        public List<Book> GetCategory(int categoryId)
+        {
+            return context.Books.Where(b => b.Category.Id == categoryId).OrderBy(b => b.Title).ToList();
+        }
         public List<Book> GetAvailableBooks()
         {
             return context.Books.Where(b => b.Amount>0).OrderBy(b => b.Title).ToList();
