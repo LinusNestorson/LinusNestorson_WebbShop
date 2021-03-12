@@ -41,7 +41,7 @@ namespace LinusNestorson_WebbShop.Database
             using (var db = new ShopContext())
             {
                 var book = db.Books.FirstOrDefault(b => b.Title == title);
-                if (book == null)
+                if (db.Books.Count() == 0)
                 {
                     book = new Book { Title = title, Author = author, Price = price, Amount = amount, Category = db.Categories.FirstOrDefault(c => c.Name == category) };
                     db.Update(book);

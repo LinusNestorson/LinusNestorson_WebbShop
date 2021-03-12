@@ -18,8 +18,9 @@ namespace LinusNestorson_WebbShop
                 var user = context.Users.FirstOrDefault(u => u.Name == username && u.Password == password); // Lägg till && IsActive == True
                 if (user != null)
                 {
-                    user.LastLogin = DateTime.Now;
-                    user.SessionTimer = user.LastLogin.AddMinutes(15);
+                    user.IsActive = true;
+                    user.LastRefresh = DateTime.Now;
+                    user.SessionTimer = user.LastRefresh.AddMinutes(15);
                     context.Users.Update(user);
                     context.SaveChanges();
                     return user.Id;
@@ -28,17 +29,17 @@ namespace LinusNestorson_WebbShop
             //Kontrollera om användare finns
             return 0; // 0 = user doesn't exist
         }
-        public void Logout(int id)
+        public void Logout(int userId)
         {
-            var user = context.Users.FirstOrDefault(u => u.Id == id);
+            var user = context.Users.FirstOrDefault(u => u.Id == userId);
             if (user != null)
             {
-                user.LastLogin = DateTime.MinValue;
+                user.IsActive = false;
+                user.LastRefresh = DateTime.MinValue;
                 context.Users.Update(user);
                 context.SaveChanges();
             }
         }
-
         public List<Category> GetCategories()
         {
             return context.Categories.OrderBy(c => c.Name).ToList();
@@ -93,14 +94,13 @@ namespace LinusNestorson_WebbShop
             var user = context.Users.FirstOrDefault(u => u.Id == userId);
             if (DateTime.Now < user.SessionTimer)
             {
-                user.LastLogin = DateTime.Now;
-                user.SessionTimer = user.LastLogin.AddMinutes(15);
+                user.LastRefresh = DateTime.Now;
+                user.SessionTimer = user.LastRefresh.AddMinutes(15);
                 context.Users.Update(user);
                 context.SaveChanges();
                 return "Pong";
             }
             else return string.Empty;
-
         }
         public bool Register(string name, string password, string verPassword)
         {
