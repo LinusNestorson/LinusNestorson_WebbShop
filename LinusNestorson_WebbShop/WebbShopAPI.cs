@@ -108,13 +108,9 @@ namespace LinusNestorson_WebbShop
             if (user == null && password == verPassword)
             {
                 user = new User() { Name = name, Password = password };
-                context.Users.Update(user);
+                context.Users.Add(user);
                 context.SaveChanges();
                 return true;
-            }
-            else if (password != verPassword)
-            {
-                return false;
             }
             else return false;
         }

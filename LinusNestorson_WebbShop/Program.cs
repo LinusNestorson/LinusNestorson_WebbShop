@@ -34,90 +34,105 @@ namespace LinusNestorson_WebbShop
                 return; // Hur hantera detta?
             }
 
+            Console.WriteLine(adminOptions.MoneyEarned(userId));
 
+            //foreach (var item in adminOptions.SoldItems(userId))
+            //{
+            //    Console.WriteLine($"{item.Title}");
+            //}
+
+
+            //if (adminOptions.AddUser(userId, "Dumbo", string.Empty))
+            //{
+            //    Console.WriteLine("New user added");
+            //}
+            //else if (!adminOptions.AddUser(userId, "Dumbo", string.Empty))
+            //{
+            //    Console.WriteLine("something went wrong, try again");
+            //}
 
             //adminOptions.DeleteCatagory(1, 1);
 
-            //foreach (var book in webbshop.GetCategory(3))
-            //{
-            //    Console.WriteLine(book.Title);
-            //}
+                //foreach (var book in webbshop.GetCategory(3))
+                //{
+                //    Console.WriteLine(book.Title);
+                //}
 
-            //adminOptions.UpdateCategory(1, 2, "Fantasy");
+                //adminOptions.UpdateCategory(1, 2, "Fantasy");
 
-            //adminOptions.AddBookToCategory(1, 2, 3);
+                //adminOptions.AddBookToCategory(1, 2, 3);
 
-            //adminOptions.DeleteBook(userId, 1);
+                //adminOptions.DeleteBook(userId, 1);
 
-            //adminOptions.UpdateBook(userId, 1, "BongoBoos Äventyr", "Sunil", 579);
+                //adminOptions.UpdateBook(userId, 1, "BongoBoos Äventyr", "Sunil", 579);
 
-            //foreach (var user in adminOptions.FindUser(userId, "Test"))
-            //{
-            //    Console.WriteLine($"{user.Name}");
-            //}
+                //foreach (var user in adminOptions.FindUser(userId, "Test"))
+                //{
+                //    Console.WriteLine($"{user.Name}");
+                //}
 
-            //foreach (var user in adminOptions.ListUsers(userId))
-            //{
-            //    Console.WriteLine($"{user.Name}");
-            //}
+                //foreach (var user in adminOptions.ListUsers(userId))
+                //{
+                //    Console.WriteLine($"{user.Name}");
+                //}
 
-            //adminOptions.SetAmount(userId, 1, 5);
+                //adminOptions.SetAmount(userId, 1, 5);
 
-            //adminOptions.AddBook(userId, "Twilight", "Stephanie Mayer", 79, 3);
+                //adminOptions.AddBook(userId, "Twilight", "Stephanie Mayer", 79, 3);
 
-            //if (webbshop.Register("Juice", "Apelsin", "Apelsin"))
-            //{
-            //    using (var context = new ShopContext())
-            //    {
-            //        var user = context.Users.FirstOrDefault(u => u.Name == "Juice");
-            //        Console.WriteLine($"Welcome {user.Name}!");
-            //    }
-            //}
+                //if (webbshop.Register("Juice", "Apelsin", "Apelsin"))
+                //{
+                //    using (var context = new ShopContext())
+                //    {
+                //        var user = context.Users.FirstOrDefault(u => u.Name == "Juice");
+                //        Console.WriteLine($"Welcome {user.Name}!");
+                //    }
+                //}
 
-            //int userId = webbshop.Login("TestClient", "Codic2021");
-            //User user = userHelper.GetUser(userId);
+                //int userId = webbshop.Login("TestClient", "Codic2021");
+                //User user = userHelper.GetUser(userId);
 
-            //Console.WriteLine($"Welcome {user.Name}");
-            //Console.WriteLine(webbshop.GetBook(2));
+                //Console.WriteLine($"Welcome {user.Name}");
+                //Console.WriteLine(webbshop.GetBook(2));
 
-            //var categoryList = webbshop.GetCategories();
-            //foreach (var category in categoryList)
-            //{
-            //    Console.WriteLine(category.Name);
-            //}
+                //var categoryList = webbshop.GetCategories();
+                //foreach (var category in categoryList)
+                //{
+                //    Console.WriteLine(category.Name);
+                //}
 
-            //var bookList = webbshop.GetBooks("or");
-            //foreach (var book in bookList)
-            //{
-            //    Console.WriteLine(book.Title);
-            //}
+                //var bookList = webbshop.GetBooks("or");
+                //foreach (var book in bookList)
+                //{
+                //    Console.WriteLine(book.Title);
+                //}
 
-            //var authorBookList = webbshop.GetAuthors("st");
-            //foreach (var book in authorBookList)
-            //{
-            //    Console.WriteLine(book.Title);
-            //}
+                //var authorBookList = webbshop.GetAuthors("st");
+                //foreach (var book in authorBookList)
+                //{
+                //    Console.WriteLine(book.Title);
+                //}
 
-            //webbshop.BuyBook(2, 1); //<----Lägg till någon text om att köpet var lyckat if metod == true
-            //{
-            //    using (var context = new ShopContext())
-            //    {
-            //        foreach (var user in context.Users)
-            //        {
-            //            Console.WriteLine($"User: {user.Name}");
+                //webbshop.BuyBook(2, 1); //<----Lägg till någon text om att köpet var lyckat if metod == true
+                //{
+                //    using (var context = new ShopContext())
+                //    {
+                //        foreach (var user in context.Users)
+                //        {
+                //            Console.WriteLine($"User: {user.Name}");
 
-            //            var bookContext = new ShopContext();
-            //            var boughtBooks = bookContext.SoldBooks.Where(b => b.User == user).ToList();
-            //            if (boughtBooks.Count() != 0)
-            //            {
-            //                foreach (var book in boughtBooks)
-            //                {
-            //                    Console.WriteLine($"Bought: {book.Title}");
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                //            var bookContext = new ShopContext();
+                //            var boughtBooks = bookContext.SoldBooks.Where(b => b.User == user).ToList();
+                //            if (boughtBooks.Count() != 0)
+                //            {
+                //                foreach (var book in boughtBooks)
+                //                {
+                //                    Console.WriteLine($"Bought: {book.Title}");
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
 
         }
 

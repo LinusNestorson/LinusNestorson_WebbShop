@@ -17,7 +17,7 @@ namespace LinusNestorson_WebbShop
 
         public bool AddBook(int adminId, int bookId, string title, string author, int price, int amount)
         {
-            if (adminHelp.ifAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId))
             {
                 if (bookHelp.doesBookExist(bookId))
                 {
@@ -37,20 +37,21 @@ namespace LinusNestorson_WebbShop
             }
             else return false;
         }
-        public void SetAmount(int adminId, int bookId, int amount)
+        public bool SetAmount(int adminId, int bookId, int amount)
         {
-            if (adminHelp.ifAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId))
             {
                 var book = context.Books.FirstOrDefault(b => b.Id == bookId);
                 book.Amount = amount;
                 context.Books.Update(book);
                 context.SaveChanges();
+                return true;
             }
-            else Console.WriteLine("You are not authorized to perform this action");
+            else return false;
         }
         public List<User> ListUsers(int adminId)
         {
-            if (adminHelp.ifAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId))
             {
                 return context.Users.OrderBy(u => u.Name).ToList();
             }
@@ -58,7 +59,7 @@ namespace LinusNestorson_WebbShop
         }
         public List<User> FindUser(int adminId, string keyword)
         {
-            if (adminHelp.ifAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId))
             {
                 return context.Users.Where(u => u.Name.Contains(keyword)).OrderBy(u => u.Name).ToList();
             }
@@ -66,7 +67,7 @@ namespace LinusNestorson_WebbShop
         }
         public bool UpdateBook(int adminId, int bookId, string title, string author, int price)
         {
-            if (adminHelp.ifAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId))
             {
                 if (bookHelp.doesBookExist(bookId))
                 {
@@ -82,7 +83,7 @@ namespace LinusNestorson_WebbShop
         }
         public bool DeleteBook(int adminId, int bookId)
         {
-            if (adminHelp.ifAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId))
             {
                 var book = context.Books.FirstOrDefault(b => b.Id == bookId);
                 book.Amount = book.Amount - 1;
@@ -100,7 +101,7 @@ namespace LinusNestorson_WebbShop
         }
         public bool AddCategory(int adminId, string name)
         {
-            if (adminHelp.ifAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId))
             {
                 var newCategory = new Category() { Name = name };
                 context.Categories.Add(newCategory);
@@ -112,7 +113,7 @@ namespace LinusNestorson_WebbShop
         }
         public bool AddBookToCategory(int adminId, int bookId, int categoryId)
         {
-            if (adminHelp.ifAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId))
             {
                 var book = context.Books.FirstOrDefault(b => b.Id == bookId);
                 book.Category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
@@ -125,7 +126,7 @@ namespace LinusNestorson_WebbShop
         }
         public bool UpdateCategory(int adminId, int categoryId, string catName)
         {
-            if (adminHelp.ifAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId))
             {
                 var category = context.Categories.FirstOrDefault(b => b.Id == categoryId);
                 category.Name = catName;
@@ -138,7 +139,7 @@ namespace LinusNestorson_WebbShop
         }
         public bool DeleteCatagory(int adminId, int categoryId) // Skall enbart raderas om det inte finns några bäcker kopplade till kategorin
         {
-            if (adminHelp.ifAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId))
             {
                 var category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
                 var book = context.Books.FirstOrDefault(b => b.Category.Id == categoryId);
@@ -158,29 +159,52 @@ namespace LinusNestorson_WebbShop
             else return false;
         }
 
-        //GÖR KLART DENNA METOD! (ADDUSER())
-        //public bool AddUser(int adminId, string name, string Password)
-        //{
-        //    if (adminHelp.ifAdmin(adminId))
-        //    {
-        //        if (userHelp.doesUserExist(name))
-        //        {
-        //            var user = context.Users.FirstOrDefault(u => u.Name == name);
-        //            book.Amount = book.Amount + amount;
-        //            context.Books.Update(book);
-        //            context.SaveChanges();
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            var newBook = new Book() { Title = title, Author = author, Price = price, Amount = amount };
-        //            context.Books.Add(newBook);
-        //            context.SaveChanges();
-        //            return false;
-        //        }
-        //    }
-        //    else return false;
-        //}
+        public bool AddUser(int adminId, string name, string password)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                if (userHelp.doesUserExist(name))
+                {
+                    if (password == string.Empty)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        var user = new User() { Name = name, Password = password };
+                        context.Users.Add(user);
+                        context.SaveChanges();
+                        return true;
+                    }
+                }
+                else return false;
+            }
+            else return false;
+        }
+        public List<SoldBook> SoldItems(int adminId)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                return context.SoldBooks.OrderBy(b => b.Title).ToList();
+            }
+            else return null;
+        }
+        public int MoneyEarned(int adminId)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                int sum = context.SoldBooks.Sum(b => b.Price);
+                return sum;
+            }
+            else return 0;
+        }
+        public User BestCustomer(int adminId)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                var user = context.SoldBooks.Sum(bb => bb.User);
+            }
+        }
     }
 }
 

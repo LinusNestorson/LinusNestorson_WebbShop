@@ -9,7 +9,7 @@ namespace LinusNestorson_WebbShop.Helpers
     public class AdminHelper
     {
         private ShopContext context = new ShopContext();
-        public bool ifAdmin(int adminId)
+        public bool IfAdmin(int adminId)
         {
             var user = context.Users.FirstOrDefault(u => u.Id == adminId);
             if (user.IsAdmin)
