@@ -10,22 +10,46 @@ namespace LinusNestorson_WebbShop.Helpers
     public class UserHelper
     {
         private ShopContext context = new ShopContext();
-        public User GetUser(int userId)
-        {
-            using (var context = new ShopContext())
-            {
-                var user = context.Users.FirstOrDefault(u => u.Id == userId);
-                return user;
-            }
-        }
-        public bool doesUserExist(string name)
+        /// <summary>
+        /// See if user exist in database based on name.
+        /// </summary>
+        /// <param name="name">Name of user</param>
+        /// <returns>True if user exist, false if not</returns>
+        public bool DoesUserExist(string name)
         {
             var user = context.Users.FirstOrDefault(u => u.Name == name);
             if (user != null)
             {
                 return true;
             }
+            
             else return false;
+        }
+        /// <summary>
+        /// Overloaded mothed of DoesUserExist above. See if user exist in database based in Id.
+        /// </summary>
+        /// <param name="userId">Id of user</param>
+        /// <returns>True if user exist, false if not</returns>
+        public bool DoesUserExist(int userId)
+        {
+            var user = context.Users.FirstOrDefault(u => u.Id == userId);
+            if (user != null)
+            {
+                return true;
+            }
+            else return false;
+        }
+        public bool CheckSessionTimer(int userId)
+        {
+            var user = context.Users.FirstOrDefault(u => u.Id == userId);
+            if (DateTime.Now < user.SessionTimer)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -10,19 +10,21 @@ using System.Linq;
 namespace LinusNestorson_WebbShop
 {
     class Program
-    {   
-        //TODO: Gör klart metod för AddUser()
-        //TODO: Gör alla klasser för G
-        //TODO: Gör alla klasser för VG
-        //TODO: Fixa seeder-klassen
+    {
+        //TODO: Lägg till Ping-metod i alla klasser.
+        //TODO: Fixa seeder-klassen.
+        //TODO: Ta bort onödiga if-satser i metoderna (se IfAdmin).
         internal static void Main()
         {
-            var webbshop = new WebbShopAPI();
+            var webbShop = new WebbShopAPI();
             var adminOptions = new AdminAPI();
-            var userHelper = new UserHelper();
-            
+
             Seeder.GenerateData();
-            var userId = webbshop.Login("Administrator", "CodicRulez");
+
+            //CASE 1:
+            Console.WriteLine("TEST OF NORMAL USER, PRESS [ENTER] TO GO TO NEXT METHOD");
+            //Test user logs in.
+            var userId = webbShop.Login("TestClient", "Codic2021");
 
             if (userId != 0)
             {
@@ -31,110 +33,91 @@ namespace LinusNestorson_WebbShop
             else
             {
                 Console.WriteLine("Login failed");
-                return; // Hur hantera detta?
             }
+            Console.ReadLine();
+            //Test user looks for avaiable categories.
+            Console.WriteLine("Here are the available categories in this shop:\n");
+            foreach (var category in webbShop.GetCategories())
+            {
+                Console.WriteLine(category.Name);
+            }
+            Console.WriteLine("\n" + webbShop.Ping(userId));
+            Console.ReadLine();
+            //Test user chose a specifik category. 
+            Console.WriteLine("Here are the books in you chosen category:\n");
+            foreach (var book in webbShop.GetCategory(1))
+            {
+                Console.WriteLine(book.Title);
+            }
+            Console.WriteLine("\n" + webbShop.Ping(userId));
+            Console.ReadLine();
+            //Test user reads information about specific book.
+            Console.WriteLine("Info about chosen book:\n");
 
-            Console.WriteLine(adminOptions.MoneyEarned(userId));
+            Console.WriteLine(webbShop.GetBook(3));
+            Console.WriteLine("\n" + webbShop.Ping(userId));
+            Console.ReadLine();
+            //Test user buys book.
+            bool successOrFail = webbShop.BuyBook(userId, 3);
+            if (successOrFail)
+            {
+                Console.WriteLine("Chosen book bought!");
+                Console.WriteLine("\n" + webbShop.Ping(userId));
+            }
+            else if (!successOrFail)
+            {
+                Console.WriteLine("You failed to buy the book.");
+                Console.WriteLine("\n" + webbShop.Ping(userId));
+            }
+            Console.ReadLine();
+            //Test user logs out.
+            webbShop.Logout(userId);
 
-            //foreach (var item in adminOptions.SoldItems(userId))
-            //{
-            //    Console.WriteLine($"{item.Title}");
-            //}
-
-
-            //if (adminOptions.AddUser(userId, "Dumbo", string.Empty))
-            //{
-            //    Console.WriteLine("New user added");
-            //}
-            //else if (!adminOptions.AddUser(userId, "Dumbo", string.Empty))
-            //{
-            //    Console.WriteLine("something went wrong, try again");
-            //}
-
-            //adminOptions.DeleteCatagory(1, 1);
-
-                //foreach (var book in webbshop.GetCategory(3))
-                //{
-                //    Console.WriteLine(book.Title);
-                //}
-
-                //adminOptions.UpdateCategory(1, 2, "Fantasy");
-
-                //adminOptions.AddBookToCategory(1, 2, 3);
-
-                //adminOptions.DeleteBook(userId, 1);
-
-                //adminOptions.UpdateBook(userId, 1, "BongoBoos Äventyr", "Sunil", 579);
-
-                //foreach (var user in adminOptions.FindUser(userId, "Test"))
-                //{
-                //    Console.WriteLine($"{user.Name}");
-                //}
-
-                //foreach (var user in adminOptions.ListUsers(userId))
-                //{
-                //    Console.WriteLine($"{user.Name}");
-                //}
-
-                //adminOptions.SetAmount(userId, 1, 5);
-
-                //adminOptions.AddBook(userId, "Twilight", "Stephanie Mayer", 79, 3);
-
-                //if (webbshop.Register("Juice", "Apelsin", "Apelsin"))
-                //{
-                //    using (var context = new ShopContext())
-                //    {
-                //        var user = context.Users.FirstOrDefault(u => u.Name == "Juice");
-                //        Console.WriteLine($"Welcome {user.Name}!");
-                //    }
-                //}
-
-                //int userId = webbshop.Login("TestClient", "Codic2021");
-                //User user = userHelper.GetUser(userId);
-
-                //Console.WriteLine($"Welcome {user.Name}");
-                //Console.WriteLine(webbshop.GetBook(2));
-
-                //var categoryList = webbshop.GetCategories();
-                //foreach (var category in categoryList)
-                //{
-                //    Console.WriteLine(category.Name);
-                //}
-
-                //var bookList = webbshop.GetBooks("or");
-                //foreach (var book in bookList)
-                //{
-                //    Console.WriteLine(book.Title);
-                //}
-
-                //var authorBookList = webbshop.GetAuthors("st");
-                //foreach (var book in authorBookList)
-                //{
-                //    Console.WriteLine(book.Title);
-                //}
-
-                //webbshop.BuyBook(2, 1); //<----Lägg till någon text om att köpet var lyckat if metod == true
-                //{
-                //    using (var context = new ShopContext())
-                //    {
-                //        foreach (var user in context.Users)
-                //        {
-                //            Console.WriteLine($"User: {user.Name}");
-
-                //            var bookContext = new ShopContext();
-                //            var boughtBooks = bookContext.SoldBooks.Where(b => b.User == user).ToList();
-                //            if (boughtBooks.Count() != 0)
-                //            {
-                //                foreach (var book in boughtBooks)
-                //                {
-                //                    Console.WriteLine($"Bought: {book.Title}");
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
-
+            //CASE 2:
+            Console.WriteLine("TEST OF ADMIN USER, PRESS [ENTER] TO GO TO NEXT METHOD");
+            //Admin logs in, search for book and buys.
+            userId = webbShop.Login("Administrator", "CodicRulez");
+            if (userId != 0)
+            {
+                Console.WriteLine("Login succeeded");
+            }
+            else
+            {
+                Console.WriteLine("Login failed");
+                return;
+            }
+            Console.ReadLine();
+            //Admin adds book.
+            successOrFail = adminOptions.AddBook(userId, "Harry Potta", "JK Rullar", 100, 1);
+            if (successOrFail)
+            {
+                Console.WriteLine("Book or amount of book added to database");
+                Console.WriteLine("\n" + webbShop.Ping(userId));
+            }
+            else if (!successOrFail)
+            {
+                Console.WriteLine("\nYou failed to add book");
+                Console.WriteLine("\n" + webbShop.Ping(userId));
+            }
+            Console.ReadLine();
+            //Admin moves book to category.
+            successOrFail = adminOptions.AddBookToCategory(userId, 5, 3);
+            if (successOrFail)
+            {
+                Console.WriteLine("Book was moved to new category");
+                Console.WriteLine("\n" + webbShop.Ping(userId));
+            }
+            else if (!successOrFail)
+            {
+                Console.WriteLine("Failed to move book to category");
+                Console.WriteLine("\n" + webbShop.Ping(userId));
+            }
+            Console.ReadLine();
+            //Admin search database for how much money is earned.
+            var sum = adminOptions.MoneyEarned(userId);
+            Console.WriteLine($"You have earned {sum} kr");
+            Console.WriteLine("\n" + webbShop.Ping(userId));
+            webbShop.Logout(userId);
         }
-
     }
 }

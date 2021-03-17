@@ -9,7 +9,12 @@ namespace LinusNestorson_WebbShop.Helpers
     public class BookHelper
     {
         private ShopContext context = new ShopContext();
-        public bool doesBookExist(int bookId)
+        /// <summary>
+        /// Method to see if book exist in database.
+        /// </summary>
+        /// <param name="bookId">Id of the specific book</param>
+        /// <returns>True if book exist, false if not</returns>
+        public bool DoesBookExist(int bookId)
         {
             var book = context.Books.FirstOrDefault(b => b.Id == bookId);
             if (book != null)

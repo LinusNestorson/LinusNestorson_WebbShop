@@ -114,9 +114,11 @@ namespace LinusNestorson_WebbShop.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("SessionTimer")
@@ -143,17 +145,12 @@ namespace LinusNestorson_WebbShop.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("LinusNestorson_WebbShop.Models.User", "User")
-                        .WithMany("OwnedBooks")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LinusNestorson_WebbShop.Models.User", b =>
-                {
-                    b.Navigation("OwnedBooks");
                 });
 #pragma warning restore 612, 618
         }

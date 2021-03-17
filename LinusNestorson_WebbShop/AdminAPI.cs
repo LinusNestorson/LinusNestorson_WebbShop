@@ -10,16 +10,48 @@ namespace LinusNestorson_WebbShop
 {
     public class AdminAPI
     {
-        private ShopContext context = new ShopContext();
+        //Help "pointers" to get access to help classes
         private AdminHelper adminHelp = new AdminHelper();
         private BookHelper bookHelp = new BookHelper();
+        private ShopContext context = new ShopContext();
         private UserHelper userHelp = new UserHelper();
-
-        public bool AddBook(int adminId, int bookId, string title, string author, int price, int amount)
+        /// <summary>
+        /// Allow admin to set user to active.
+        /// </summary>
+        /// <param name="adminId">Id of admin</param>
+        /// <param name="userId">Id of user to set to active</param>
+        /// <returns>Return true if user was changed to active, false if something fails </returns>
+        public bool ActivateUser(int adminId, int userId)
         {
             if (adminHelp.IfAdmin(adminId))
             {
-                if (bookHelp.doesBookExist(bookId))
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                if (user != null)
+                {
+                    user.IsActive = true;
+                    context.Users.Update(user);
+                    context.SaveChanges();
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Adds book to database based on input. If book exist, add amount to existing book.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="title">Title of book</param>
+        /// <param name="author">Author of book</param>
+        /// <param name="price">Price of book</param>
+        /// <param name="amount">Amount of book to add to stock</param>
+        /// <param name="bookId">Id of book</param>
+        /// <returns>return true if book was added or stock increased</returns>
+        public bool AddBook(int adminId, string title, string author, int price, int amount, int bookId = 0)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                if (bookHelp.DoesBookExist(bookId))
                 {
                     var book = context.Books.FirstOrDefault(b => b.Id == bookId);
                     book.Amount = book.Amount + amount;
@@ -32,47 +64,26 @@ namespace LinusNestorson_WebbShop
                     var newBook = new Book() { Title = title, Author = author, Price = price, Amount = amount };
                     context.Books.Add(newBook);
                     context.SaveChanges();
-                    return false;
+                    return true;
                 }
             }
             else return false;
         }
-        public bool SetAmount(int adminId, int bookId, int amount)
+        /// <summary>
+        /// Add book to chosen category by admin.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="bookId">Id of book to add to category</param>
+        /// <param name="categoryId">Id of chosen category</param>
+        /// <returns>True if action is successful, false if not</returns>
+        public bool AddBookToCategory(int adminId, int bookId, int categoryId)
         {
             if (adminHelp.IfAdmin(adminId))
             {
                 var book = context.Books.FirstOrDefault(b => b.Id == bookId);
-                book.Amount = amount;
-                context.Books.Update(book);
-                context.SaveChanges();
-                return true;
-            }
-            else return false;
-        }
-        public List<User> ListUsers(int adminId)
-        {
-            if (adminHelp.IfAdmin(adminId))
-            {
-                return context.Users.OrderBy(u => u.Name).ToList();
-            }
-            return null;
-        }
-        public List<User> FindUser(int adminId, string keyword)
-        {
-            if (adminHelp.IfAdmin(adminId))
-            {
-                return context.Users.Where(u => u.Name.Contains(keyword)).OrderBy(u => u.Name).ToList();
-            }
-            return null;
-        }
-        public bool UpdateBook(int adminId, int bookId, string title, string author, int price)
-        {
-            if (adminHelp.IfAdmin(adminId))
-            {
-                if (bookHelp.doesBookExist(bookId))
+                if (book != null)
                 {
-                    var book = context.Books.FirstOrDefault(b => b.Id == bookId);
-                    book.Title = title; book.Author = author; book.Price = price;
+                    book.Category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
                     context.Books.Update(book);
                     context.SaveChanges();
                     return true;
@@ -81,24 +92,12 @@ namespace LinusNestorson_WebbShop
             }
             else return false;
         }
-        public bool DeleteBook(int adminId, int bookId)
-        {
-            if (adminHelp.IfAdmin(adminId))
-            {
-                var book = context.Books.FirstOrDefault(b => b.Id == bookId);
-                book.Amount = book.Amount - 1;
-                if (book.Amount <= 0)
-                {
-                    context.Books.Remove(book);
-                    context.SaveChanges();
-                    Console.WriteLine("Book is no longer in store. Removed from database");
-                }
-                context.Books.Update(book);
-                context.SaveChanges();
-                return true;
-            }
-            else return false;
-        }
+        /// <summary>
+        /// Allowes admin to add new category to database.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="name">Name of category to add</param>
+        /// <returns>True if action is successful, false if not</returns>
         public bool AddCategory(int adminId, string name)
         {
             if (adminHelp.IfAdmin(adminId))
@@ -106,64 +105,22 @@ namespace LinusNestorson_WebbShop
                 var newCategory = new Category() { Name = name };
                 context.Categories.Add(newCategory);
                 context.SaveChanges();
-                Console.WriteLine($"{name} was added as a new category");
                 return true;
             }
             else return false;
         }
-        public bool AddBookToCategory(int adminId, int bookId, int categoryId)
-        {
-            if (adminHelp.IfAdmin(adminId))
-            {
-                var book = context.Books.FirstOrDefault(b => b.Id == bookId);
-                book.Category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
-                context.Books.Update(book);
-                context.SaveChanges();
-                Console.WriteLine($"The book was given the category {book.Category.Name}");
-                return true;
-            }
-            else return false;
-        }
-        public bool UpdateCategory(int adminId, int categoryId, string catName)
-        {
-            if (adminHelp.IfAdmin(adminId))
-            {
-                var category = context.Categories.FirstOrDefault(b => b.Id == categoryId);
-                category.Name = catName;
-                context.Categories.Update(category);
-                context.SaveChanges();
-                Console.WriteLine($"The catagory was changed to {category.Name}");
-                return true;
-            }
-            else return false;
-        }
-        public bool DeleteCatagory(int adminId, int categoryId) // Skall enbart raderas om det inte finns några bäcker kopplade till kategorin
-        {
-            if (adminHelp.IfAdmin(adminId))
-            {
-                var category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
-                var book = context.Books.FirstOrDefault(b => b.Category.Id == categoryId);
-                if (category != null && book == null)
-                {
-                    context.Categories.Remove(category);
-                    Console.WriteLine($"{category.Name} was removed from categories");
-                    context.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine("There is still books in this category. Remove them first.");
-                    return false;
-                }
-            }
-            else return false;
-        }
-
+        /// <summary>
+        /// Allows admin to add a new user.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="name">Name of user to add</param>
+        /// <param name="password">Password of user to add</param>
+        /// <returns>True if action is successful, false if not</returns>
         public bool AddUser(int adminId, string name, string password)
         {
             if (adminHelp.IfAdmin(adminId))
             {
-                if (userHelp.doesUserExist(name))
+                if (userHelp.DoesUserExist(name))
                 {
                     if (password == string.Empty)
                     {
@@ -181,6 +138,191 @@ namespace LinusNestorson_WebbShop
             }
             else return false;
         }
+        /// <summary>
+        /// To search for user that bough most books.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <returns>The user that bought most books or null if person was not admin</returns>
+        /// Help for linq-syntax found on stack overflow, post by octavioccl. URL: https://bit.ly/3cJNxMn
+        public User BestCustomer(int adminId)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                return context.SoldBooks.GroupBy(u => u.User).OrderByDescending(u => u.Count()).Select(u => u.Key).First();
+            }
+            else return null;
+        }
+        /// <summary>
+        /// Allows admin to delete books from database, one at a time.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="bookId">Id of book to delete from database</param>
+        /// <returns>Return true or false based on if action was success or fail</returns>
+        public bool DeleteBook(int adminId, int bookId)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                var book = context.Books.FirstOrDefault(b => b.Id == bookId);
+                book.Amount = book.Amount - 1;
+                if (book.Amount <= 0)
+                {
+                    context.Books.Remove(book);
+                    context.SaveChanges();
+                }
+                context.Books.Update(book);
+                context.SaveChanges();
+                return true;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Allows admin to delete category from database.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="categoryId">CategoryId of the category to be deleted</param>
+        /// <returns>Returns tru if sucessful, else return false</returns>
+        public bool DeleteCatagory(int adminId, int categoryId) // Skall enbart raderas om det inte finns några böcker kopplade till kategorin
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                var category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
+                var book = context.Books.FirstOrDefault(b => b.Category.Id == categoryId);
+                if (category != null && book == null)
+                {
+                    context.Categories.Remove(category);
+                    context.SaveChanges();
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Allows admin to demote a user from admin to normal user.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="userId">Id of user to demote</param>
+        /// <returns>Return true if successful, else return false</returns>
+        public bool Demote(int adminId, int userId)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                user.IsAdmin = false;
+                context.Users.Update(user);
+                context.SaveChanges();
+                return true;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Allows admin to search for users with a name with a specific keyword.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="keyword">Specific keyword to serach database for</param>
+        /// <returns>List of matching users</returns>
+        public List<User> FindUser(int adminId, string keyword)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                return context.Users.Where(u => u.Name.Contains(keyword)).OrderBy(u => u.Name).ToList();
+            }
+            return null;
+        }
+        /// <summary>
+        /// Allows admin to set an user to inactive.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="userId">Id of user to set to inactive</param>
+        /// <returns>True if user is set to inactive, false if not</returns>
+        public bool InactivateUser(int adminId, int userId)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                user.IsActive = false;
+                context.Users.Update(user);
+                context.SaveChanges();
+                return true;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Allows admin to see a list of all users.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <returns>Returns list of user or null if user was not admin </returns>
+        public List<User> ListUsers(int adminId)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                return context.Users.OrderBy(u => u.Name).ToList();
+            }
+            return null;
+        }
+        /// <summary>
+        /// Allows admin to see how much money was earned from selling books.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <returns>Return the sum or zero</returns>
+        public int MoneyEarned(int adminId)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                return context.SoldBooks.Sum(b => b.Price);
+            }
+            else return 0;
+        }
+        /// <summary>
+        /// Allows admin to promote user to Admin.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="userId">Id of user to promote</param>
+        /// <returns>Return true or false based on success of action</returns>
+        public bool Promote(int adminId, int userId)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                if (user != null)
+                {
+                    user.IsAdmin = true;
+                    context.Users.Update(user);
+                    context.SaveChanges();
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Allows admin to set the amount of a book in store.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="bookId">Id of book to change number in stock</param>
+        /// <param name="amount">Amount of books to set the stock to</param>
+        /// <returns>Return true or false based on success of action</returns>
+        public bool SetAmount(int adminId, int bookId, int amount)
+        {
+            if (adminHelp.IfAdmin(adminId))
+            {
+                var book = context.Books.FirstOrDefault(b => b.Id == bookId);
+                if (book != null)
+                {
+                    book.Amount = amount;
+                    context.Books.Update(book);
+                    context.SaveChanges();
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Allows admin to see all sold items.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <returns>REturn list of sold books or null if person wasn't admin</returns>
         public List<SoldBook> SoldItems(int adminId)
         {
             if (adminHelp.IfAdmin(adminId))
@@ -189,21 +331,57 @@ namespace LinusNestorson_WebbShop
             }
             else return null;
         }
-        public int MoneyEarned(int adminId)
+        /// <summary>
+        /// Allows admin to update a specific book with Title, Author and Price.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="bookId">Id of the book to be updated</param>
+        /// <param name="title">Title of book to be updated</param>
+        /// <param name="author">Author of book to be updated</param>
+        /// <param name="price">Price of book to be updated</param>
+        /// <returns>True if action was successful, false if not</returns>
+        public bool UpdateBook(int adminId, int bookId, string title, string author, int price)
         {
             if (adminHelp.IfAdmin(adminId))
             {
-                int sum = context.SoldBooks.Sum(b => b.Price);
-                return sum;
+                if (bookHelp.DoesBookExist(bookId))
+                {
+                    var book = context.Books.FirstOrDefault(b => b.Id == bookId);
+                    if (book != null)
+                    {
+                        book.Title = title; book.Author = author; book.Price = price;
+                        context.Books.Update(book);
+                        context.SaveChanges();
+                        return true;
+                    }
+                    else return false;
+                }
+                else return false;
             }
-            else return 0;
+            else return false;
         }
-        public User BestCustomer(int adminId)
+        /// <summary>
+        /// Allows admin to update.
+        /// </summary>
+        /// <param name="adminId">AdminId to see if action is allowed</param>
+        /// <param name="categoryId">Id of category to be updated</param>
+        /// <param name="catName">New name of category</param>
+        /// <returns>Return true if successful, false if not</returns>
+        public bool UpdateCategory(int adminId, int categoryId, string catName)
         {
             if (adminHelp.IfAdmin(adminId))
             {
-                var user = context.SoldBooks.Sum(bb => bb.User);
+                var category = context.Categories.FirstOrDefault(b => b.Id == categoryId);
+                if (category != null)
+                {
+                    category.Name = catName;
+                    context.Categories.Update(category);
+                    context.SaveChanges();
+                    return true;
+                }
+                else return false;
             }
+            else return false;
         }
     }
 }

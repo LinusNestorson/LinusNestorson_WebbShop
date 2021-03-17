@@ -9,12 +9,13 @@ namespace LinusNestorson_WebbShop.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Password { get; set; }
         public DateTime LastRefresh { get; set; }
         public DateTime SessionTimer { get; set; }
         public bool IsActive { get; set; } = true;
         public bool IsAdmin { get; set; } = false;
-        public List<SoldBook> OwnedBooks {get; set; }
     }
 }
