@@ -3,6 +3,7 @@ using LinusNestorson_WebbShop.Database;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using LinusNestorson_WebbShop.Models;
 
 namespace LinusNestorson_WebbShop.Helpers
 {

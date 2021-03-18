@@ -38,6 +38,9 @@ namespace LinusNestorson_WebbShop
                 return;
             }
             Console.ReadLine();
+
+            
+
             //Test user looks for avaiable categories.
             Console.WriteLine("Here are the available categories in this shop:\n");
             foreach (var category in webbShop.GetCategories())
@@ -70,9 +73,9 @@ namespace LinusNestorson_WebbShop
             }
             else if (!successOrFail)
             {
-                Console.WriteLine("You failed to buy the book.");
-                Console.WriteLine("\n" + webbShop.Ping(userId));
+                Console.WriteLine("You failed to buy the book");
             }
+
             Console.ReadLine();
             //Test user logs out.
             webbShop.Logout(userId);

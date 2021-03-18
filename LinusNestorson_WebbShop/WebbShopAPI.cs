@@ -61,9 +61,9 @@ namespace LinusNestorson_WebbShop
         /// Method for searching for Available books in database.
         /// </summary>
         /// <returns>List of Available books</returns>
-        public List<Book> GetAvailableBooks()
+        public List<Book> GetAvailableBooks(int categoryId)
         {
-            return context.Books.Where(b => b.Amount > 0).OrderBy(b => b.Title).ToList();
+            return context.Books.Where(b => (b.Category.Id == categoryId) && ( b.Amount > 0)).OrderBy(b => b.Title).ToList();
         }
         /// <summary>
         /// Get book based on the books Id.
@@ -156,7 +156,6 @@ namespace LinusNestorson_WebbShop
         /// <returns>If user is active, method returns string "Pong", otherwise return empty string</returns>
         public string Ping(int userId)
         {
-
             var user = context.Users.FirstOrDefault(u => u.Id == userId);
             if (user != null && DateTime.Now < user.SessionTimer)
             {

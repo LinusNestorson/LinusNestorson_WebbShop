@@ -119,23 +119,12 @@ namespace LinusNestorson_WebbShop
         /// <returns>True if action is successful, false if not</returns>
         public bool AddUser(int adminId, string name, string password)
         {
-            if (adminHelp.IfAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId) && !userHelp.DoesUserExist(name))
             {
-                if (userHelp.DoesUserExist(name))
-                {
-                    if (password == string.Empty)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        var user = new User() { Name = name, Password = password };
-                        context.Users.Add(user);
-                        context.SaveChanges();
-                        return true;
-                    }
-                }
-                else return false;
+                    var user = new User() { Name = name, Password = password };
+                    context.Users.Add(user);
+                    context.SaveChanges();
+                    return true;
             }
             else return false;
         }
@@ -145,13 +134,20 @@ namespace LinusNestorson_WebbShop
         /// <param name="adminId">AdminId to see if action is allowed</param>
         /// <returns>The user that bought most books or null if person was not admin</returns>
         /// Help for linq-syntax found on stack overflow, post by octavioccl. URL: https://bit.ly/3cJNxMn
-        public User BestCustomer(int adminId)
+        public int BestCustomer(int adminId)
         {
             if (adminHelp.IfAdmin(adminId))
             {
-                return context.SoldBooks.GroupBy(u => u.User).OrderByDescending(u => u.Count()).Select(u => u.Key).First();
+                try
+                {
+                    return context.SoldBooks.GroupBy(u => u.User.Id).OrderByDescending(u => u.Count()).Select(u => u.Key).First();
+                }
+                catch
+                {
+                    return 0;
+                } 
             }
-            else return null;
+            else return 0;
         }
         /// <summary>
         /// Allows admin to delete books from database, one at a time.
@@ -164,15 +160,23 @@ namespace LinusNestorson_WebbShop
             if (adminHelp.IfAdmin(adminId))
             {
                 var book = context.Books.FirstOrDefault(b => b.Id == bookId);
-                book.Amount = book.Amount - 1;
-                if (book.Amount <= 0)
+                if (book != null)
                 {
-                    context.Books.Remove(book);
-                    context.SaveChanges();
+                    book.Amount = book.Amount - 1;
+                    if (book.Amount <= 0)
+                    {
+                        context.Books.Remove(book);
+                        context.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        context.Books.Update(book);
+                        context.SaveChanges();
+                        return true;
+                    }
                 }
-                context.Books.Update(book);
-                context.SaveChanges();
-                return true;
+                else return false;
             }
             else return false;
         }
@@ -182,7 +186,7 @@ namespace LinusNestorson_WebbShop
         /// <param name="adminId">AdminId to see if action is allowed</param>
         /// <param name="categoryId">CategoryId of the category to be deleted</param>
         /// <returns>Returns tru if sucessful, else return false</returns>
-        public bool DeleteCatagory(int adminId, int categoryId) // Skall enbart raderas om det inte finns några böcker kopplade till kategorin
+        public bool DeleteCatagory(int adminId, int categoryId)
         {
             if (adminHelp.IfAdmin(adminId))
             {
@@ -343,19 +347,15 @@ namespace LinusNestorson_WebbShop
         /// <returns>True if action was successful, false if not</returns>
         public bool UpdateBook(int adminId, int bookId, string title, string author, int price)
         {
-            if (adminHelp.IfAdmin(adminId))
+            if (adminHelp.IfAdmin(adminId) && bookHelp.DoesBookExist(bookId))
             {
-                if (bookHelp.DoesBookExist(bookId))
+                var book = context.Books.FirstOrDefault(b => b.Id == bookId);
+                if (book != null)
                 {
-                    var book = context.Books.FirstOrDefault(b => b.Id == bookId);
-                    if (book != null)
-                    {
-                        book.Title = title; book.Author = author; book.Price = price;
-                        context.Books.Update(book);
-                        context.SaveChanges();
-                        return true;
-                    }
-                    else return false;
+                    book.Title = title; book.Author = author; book.Price = price;
+                    context.Books.Update(book);
+                    context.SaveChanges();
+                    return true;
                 }
                 else return false;
             }

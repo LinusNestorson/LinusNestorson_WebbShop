@@ -34,7 +34,7 @@ namespace LinusNestorson_WebbShop.Helpers
         public bool CheckSessionTimer(int userId)
         {
             var user = context.Users.FirstOrDefault(u => u.Id == userId);
-            if (DateTime.Now < user.SessionTimer)
+            if (user != null && DateTime.Now < user.SessionTimer)
             {
                 return true;
             }
