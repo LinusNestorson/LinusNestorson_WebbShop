@@ -10,6 +10,7 @@ namespace LinusNestorson_WebbShop.Helpers
     public class UserHelper
     {
         private ShopContext context = new ShopContext();
+
         /// <summary>
         /// See if user exist in database based on name.
         /// </summary>
@@ -26,19 +27,10 @@ namespace LinusNestorson_WebbShop.Helpers
             else return false;
         }
         /// <summary>
-        /// Overloaded mothed of DoesUserExist above. See if user exist in database based in Id.
+        /// Used to see if the sessiontimer of user is lower than current time.
         /// </summary>
-        /// <param name="userId">Id of user</param>
-        /// <returns>True if user exist, false if not</returns>
-        public bool DoesUserExist(int userId)
-        {
-            var user = context.Users.FirstOrDefault(u => u.Id == userId);
-            if (user != null)
-            {
-                return true;
-            }
-            else return false;
-        }
+        /// <param name="userId"></param>
+        /// <returns>Is true if time is within the sessiontimer, otherwise it's false</returns>
         public bool CheckSessionTimer(int userId)
         {
             var user = context.Users.FirstOrDefault(u => u.Id == userId);

@@ -9,6 +9,9 @@ namespace LinusNestorson_WebbShop.Helpers
     public class BookHelper
     {
         private ShopContext context = new ShopContext();
+
+
+
         /// <summary>
         /// Method to see if book exist in database.
         /// </summary>

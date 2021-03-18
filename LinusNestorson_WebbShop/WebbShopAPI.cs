@@ -16,6 +16,7 @@ namespace LinusNestorson_WebbShop
     {
         private ShopContext context = new ShopContext();
         private UserHelper userHelper = new UserHelper();
+
         /// <summary>
         /// Method for buying book.
         /// </summary>
@@ -29,7 +30,7 @@ namespace LinusNestorson_WebbShop
                 var user = context.Users.FirstOrDefault(u => u.Id == userId);
                 var book = context.Books.Include("Category").FirstOrDefault(b => b.Id == bookId);
 
-                if (book != null && user != null && book.Amount > 0)
+                if (user != null && book != null && book.Amount > 0)
                 {
                     var soldBook = new SoldBook() { Title = book.Title, Author = book.Author, User = user, Category = book.Category, Price = book.Price, PurchasedDate = DateTime.Now };
                     book.Amount--;
@@ -123,10 +124,10 @@ namespace LinusNestorson_WebbShop
         {
             {
                 var user = context.Users.FirstOrDefault(u => u.Name == username && u.Password == password && u.IsActive == true);
-                if (user != null)
+                if (user != null && user.IsActive == true)
                 {
                     user.LastRefresh = DateTime.Now;
-                    user.SessionTimer = user.LastRefresh.AddMinutes(1);
+                    user.SessionTimer = user.LastRefresh.AddMinutes(15);
                     context.Users.Update(user);
                     context.SaveChanges();
                     return user.Id;
@@ -155,16 +156,20 @@ namespace LinusNestorson_WebbShop
         /// <returns>If user is active, method returns string "Pong", otherwise return empty string</returns>
         public string Ping(int userId)
         {
+
             var user = context.Users.FirstOrDefault(u => u.Id == userId);
-            if (DateTime.Now < user.SessionTimer && user != null)
+            if (user != null && DateTime.Now < user.SessionTimer)
             {
                 user.LastRefresh = DateTime.Now;
-                user.SessionTimer = user.LastRefresh.AddMinutes(1);
+                user.SessionTimer = user.LastRefresh.AddMinutes(15);
                 context.Users.Update(user);
                 context.SaveChanges();
                 return "Pong";
             }
-            else return string.Empty;
+            else
+            {
+                return string.Empty;
+            }
         }
         /// <summary>
         /// To register new user.

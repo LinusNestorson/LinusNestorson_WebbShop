@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LinusNestorson_WebbShop.Database.Seeder">
+    <Position X="21.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAABAAAAAAAAAAAIA=</HashCode>
+      <FileName>Database\Seeder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinusNestorson_WebbShop.Models.SoldBook">
+    <Position X="10.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAQAAAEAAgAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\SoldBook.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinusNestorson_WebbShop.Models.Category">
+    <Position X="10.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinusNestorson_WebbShop.Models.User">
+    <Position X="10.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAEAAAAEAAAAAQACAAQAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinusNestorson_WebbShop.AdminAPI">
+    <Position X="17.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hBACAABGAAQAAAAAACAQAADAAAQAACAgBAAgAkAAAgg=</HashCode>
+      <FileName>AdminAPI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinusNestorson_WebbShop.WebbShopAPI">
+    <Position X="17.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABKAAAAAAAAAIAAAEAAAAICAQBBgAAAAAAQQAAAAAA=</HashCode>
+      <FileName>WebbShopAPI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinusNestorson_WebbShop.Database.ShopContext">
+    <Position X="10.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAQAAEAAAAAAAAAAAgAAAEAAAAAAAAAABAAA=</HashCode>
+      <FileName>Database\ShopContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinusNestorson_WebbShop.Program">
+    <Position X="22.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinusNestorson_WebbShop.Helpers.AdminHelper">
+    <Position X="19.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Helpers\AdminHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinusNestorson_WebbShop.Helpers.BookHelper">
+    <Position X="14.25" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\BookHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinusNestorson_WebbShop.Helpers.UserHelper">
+    <Position X="21.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\UserHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -10,6 +10,8 @@ namespace LinusNestorson_WebbShop.Helpers
     public class AdminHelper
     {
         private ShopContext context = new ShopContext();
+
+
         /// <summary>
         /// Method to check if user is Admin.
         /// </summary>
@@ -20,7 +22,7 @@ namespace LinusNestorson_WebbShop.Helpers
             var user = context.Users.FirstOrDefault(u => u.Id == adminId);
             if (user != null && user.IsAdmin)
             {
-                    return true;
+                return true;
             }
             else return false;
         }

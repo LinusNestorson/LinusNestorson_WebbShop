@@ -14,6 +14,8 @@ namespace LinusNestorson_WebbShop
         //TODO: Lägg till Ping-metod i alla klasser.
         //TODO: Fixa seeder-klassen.
         //TODO: Ta bort onödiga if-satser i metoderna (se IfAdmin).
+        //TODO: Try-catch på Ping-metoden?
+        //TODO: Se så att user != null är först i alla if-satser
         internal static void Main()
         {
             var webbShop = new WebbShopAPI();
@@ -28,11 +30,12 @@ namespace LinusNestorson_WebbShop
 
             if (userId != 0)
             {
-                Console.WriteLine("Login succeeded");
+                Console.WriteLine("\nLogin succeeded");
             }
             else
             {
-                Console.WriteLine("Login failed");
+                Console.WriteLine("\nLogin failed, could not find user.\nTry to run the program again with valid and active user");
+                return;
             }
             Console.ReadLine();
             //Test user looks for avaiable categories.
@@ -41,6 +44,7 @@ namespace LinusNestorson_WebbShop
             {
                 Console.WriteLine(category.Name);
             }
+
             Console.WriteLine("\n" + webbShop.Ping(userId));
             Console.ReadLine();
             //Test user chose a specifik category. 
@@ -79,11 +83,11 @@ namespace LinusNestorson_WebbShop
             userId = webbShop.Login("Administrator", "CodicRulez");
             if (userId != 0)
             {
-                Console.WriteLine("Login succeeded");
+                Console.WriteLine("\nLogin succeeded");
             }
             else
             {
-                Console.WriteLine("Login failed");
+                Console.WriteLine("\nLogin failed, could not find user.\nTry to run the program again with valid and active user");
                 return;
             }
             Console.ReadLine();

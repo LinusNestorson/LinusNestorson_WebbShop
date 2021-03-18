@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LinusNestorson_WebbShop.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20210317132710_Testingtesting")]
-    partial class Testingtesting
+    [Migration("20210318085642_starting")]
+    partial class starting
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -116,11 +116,9 @@ namespace LinusNestorson_WebbShop.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("SessionTimer")

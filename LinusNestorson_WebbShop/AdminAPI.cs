@@ -15,6 +15,7 @@ namespace LinusNestorson_WebbShop
         private BookHelper bookHelp = new BookHelper();
         private ShopContext context = new ShopContext();
         private UserHelper userHelp = new UserHelper();
+
         /// <summary>
         /// Allow admin to set user to active.
         /// </summary>
