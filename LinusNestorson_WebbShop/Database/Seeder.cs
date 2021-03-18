@@ -9,6 +9,7 @@ namespace LinusNestorson_WebbShop.Database
 {
     public static class Seeder
     {
+
         /// <summary>
         /// Method to generate books.
         /// </summary>

@@ -1,6 +1,7 @@
 ﻿using LinusNestorson_WebbShop.Database;
 using LinusNestorson_WebbShop.Helpers;
 using LinusNestorson_WebbShop.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,10 +122,20 @@ namespace LinusNestorson_WebbShop
         {
             if (adminHelp.IfAdmin(adminId) && !userHelp.DoesUserExist(name))
             {
+                if (password == String.Empty)
+                {
+                    var user = new User() { Name = name, Password = "Codic2021" };
+                    context.Users.Add(user);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                { 
                     var user = new User() { Name = name, Password = password };
                     context.Users.Add(user);
                     context.SaveChanges();
                     return true;
+                }
             }
             else return false;
         }

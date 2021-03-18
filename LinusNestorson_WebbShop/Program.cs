@@ -11,10 +11,7 @@ namespace LinusNestorson_WebbShop
 {
     class Program
     {
-        //TODO: Lägg till Ping-metod i alla klasser.
-        //TODO: Fixa seeder-klassen.
         //TODO: Ta bort onödiga if-satser i metoderna (se IfAdmin).
-        //TODO: Try-catch på Ping-metoden?
         //TODO: Se så att user != null är först i alla if-satser
         internal static void Main()
         {
@@ -38,8 +35,6 @@ namespace LinusNestorson_WebbShop
                 return;
             }
             Console.ReadLine();
-
-            
 
             //Test user looks for avaiable categories.
             Console.WriteLine("Here are the available categories in this shop:\n");

@@ -16,6 +16,5 @@ namespace LinusNestorson_WebbShop.Models
         public DateTime SessionTimer { get; set; }
         public bool IsActive { get; set; } = true;
         public bool IsAdmin { get; set; } = false;
-
     }
 }
