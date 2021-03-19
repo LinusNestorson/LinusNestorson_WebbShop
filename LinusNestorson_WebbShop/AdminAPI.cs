@@ -49,7 +49,7 @@ namespace LinusNestorson_WebbShop
         /// <param name="amount">Amount of book to add to stock</param>
         /// <param name="bookId">Id of book</param>
         /// <returns>return true if book was added or stock increased</returns>
-        public bool AddBook(int adminId, string title, string author, int price, int amount, int bookId = 0)
+        public bool AddBook(int adminId, string title, string author, int price, int amount)
         {
             if (adminHelp.IfAdmin(adminId))
             {
