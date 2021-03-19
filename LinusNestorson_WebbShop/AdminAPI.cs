@@ -53,9 +53,9 @@ namespace LinusNestorson_WebbShop
         {
             if (adminHelp.IfAdmin(adminId))
             {
-                if (bookHelp.DoesBookExist(bookId))
+                if (bookHelp.DoesBookExist(title))
                 {
-                    var book = context.Books.FirstOrDefault(b => b.Id == bookId);
+                    var book = context.Books.FirstOrDefault(b => b.Title == title);
                     book.Amount = book.Amount + amount;
                     context.Books.Update(book);
                     context.SaveChanges();
@@ -366,7 +366,7 @@ namespace LinusNestorson_WebbShop
         /// <returns>True if action was successful, false if not</returns>
         public bool UpdateBook(int adminId, int bookId, string title, string author, int price)
         {
-            if (adminHelp.IfAdmin(adminId) && bookHelp.DoesBookExist(bookId))
+            if (adminHelp.IfAdmin(adminId) && bookHelp.DoesBookExist(title))
             {
                 var book = context.Books.FirstOrDefault(b => b.Id == bookId);
                 if (book != null)

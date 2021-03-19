@@ -14,11 +14,11 @@ namespace LinusNestorson_WebbShop.Helpers
         /// <summary>
         /// Method to see if book exist in database.
         /// </summary>
-        /// <param name="bookId">Id of the specific book</param>
+        /// <param name="title">Title of specific book</param>
         /// <returns>True if book exist, false if not</returns>
-        public bool DoesBookExist(int bookId)
+        public bool DoesBookExist(string title)
         {
-            var book = context.Books.FirstOrDefault(b => b.Id == bookId);
+            var book = context.Books.FirstOrDefault(b => b.Title == title);
             if (book != null)
             {
                 return true;
