@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LinusNestorson_WebbShop.Migrations
 {
-    public partial class Testing : Migration
+    public partial class FinalMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

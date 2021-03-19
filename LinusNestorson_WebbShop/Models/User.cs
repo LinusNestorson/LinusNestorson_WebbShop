@@ -11,7 +11,7 @@ namespace LinusNestorson_WebbShop.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Password { get; set; } = "Codic2021";
+        public string Password { get; set; }
         public DateTime LastRefresh { get; set; }
         public DateTime SessionTimer { get; set; }
         public bool IsActive { get; set; } = true;

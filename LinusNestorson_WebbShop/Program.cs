@@ -11,8 +11,6 @@ namespace LinusNestorson_WebbShop
 {
     class Program
     {
-        //TODO: Ta bort onödiga if-satser i metoderna (se IfAdmin).
-        //TODO: Se så att user != null är först i alla if-satser
         internal static void Main()
         {
             var webbShop = new WebbShopAPI();
@@ -88,6 +86,7 @@ namespace LinusNestorson_WebbShop
                 Console.WriteLine("\nLogin failed, could not find user.\nTry to run the program again with valid and active user");
                 return;
             }
+
             Console.ReadLine();
             //Admin adds book.
             successOrFail = adminOptions.AddBook(userId, "Harry Potta", "JK Rullar", 100, 1);
@@ -119,6 +118,7 @@ namespace LinusNestorson_WebbShop
             var sum = adminOptions.MoneyEarned(userId);
             Console.WriteLine($"You have earned {sum} kr");
             Console.WriteLine("\n" + webbShop.Ping(userId));
+            //Admin logs out
             webbShop.Logout(userId);
         }
     }

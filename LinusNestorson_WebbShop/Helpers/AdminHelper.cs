@@ -11,7 +11,6 @@ namespace LinusNestorson_WebbShop.Helpers
     {
         private ShopContext context = new ShopContext();
 
-
         /// <summary>
         /// Method to check if user is Admin.
         /// </summary>

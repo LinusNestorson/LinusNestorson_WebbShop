@@ -47,6 +47,7 @@ namespace LinusNestorson_WebbShop
                 Logout(userId);
                 return false;
             }
+
         }
         /// <summary>
         /// Method for searching for Authors in database.

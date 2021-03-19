@@ -11,7 +11,7 @@ namespace LinusNestorson_WebbShop
 {
     public class AdminAPI
     {
-        //Help "pointers" to get access to help classes
+        //Help "pointers" to get access to helpers
         private AdminHelper adminHelp = new AdminHelper();
         private BookHelper bookHelp = new BookHelper();
         private ShopContext context = new ShopContext();
