@@ -224,10 +224,14 @@ namespace LinusNestorson_WebbShop
             if (adminHelp.IfAdmin(adminId))
             {
                 var user = context.Users.FirstOrDefault(u => u.Id == userId);
-                user.IsAdmin = false;
-                context.Users.Update(user);
-                context.SaveChanges();
-                return true;
+                if (user != null)
+                {
+                    user.IsAdmin = false;
+                    context.Users.Update(user);
+                    context.SaveChanges();
+                    return true;
+                }
+                else return false;
             }
             else return false;
         }
@@ -256,10 +260,14 @@ namespace LinusNestorson_WebbShop
             if (adminHelp.IfAdmin(adminId))
             {
                 var user = context.Users.FirstOrDefault(u => u.Id == userId);
-                user.IsActive = false;
-                context.Users.Update(user);
-                context.SaveChanges();
-                return true;
+                if (user != null)
+                {
+                    user.IsActive = false;
+                    context.Users.Update(user);
+                    context.SaveChanges();
+                    return true;
+                }
+                else return false;
             }
             else return false;
         }

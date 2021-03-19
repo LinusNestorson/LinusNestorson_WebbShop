@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LinusNestorson_WebbShop.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20210319070431_FinalMigration")]
+    [Migration("20210319094246_FinalMigration")]
     partial class FinalMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
