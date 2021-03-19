@@ -146,6 +146,7 @@ namespace LinusNestorson_WebbShop
             if (user != null)
             {
                 user.LastRefresh = DateTime.MinValue;
+                user.SessionTimer = DateTime.MinValue;
                 context.Users.Update(user);
                 context.SaveChanges();
             }
