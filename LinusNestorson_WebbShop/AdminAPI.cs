@@ -196,7 +196,7 @@ namespace LinusNestorson_WebbShop
         /// <param name="adminId">AdminId to see if action is allowed</param>
         /// <param name="categoryId">CategoryId of the category to be deleted</param>
         /// <returns>Returns tru if sucessful, else return false</returns>
-        public bool DeleteCatagory(int adminId, int categoryId)
+        public bool DeleteCategory(int adminId, int categoryId)
         {
             if (adminHelp.IfAdmin(adminId))
             {

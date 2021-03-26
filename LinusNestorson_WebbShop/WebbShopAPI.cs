@@ -121,7 +121,7 @@ namespace LinusNestorson_WebbShop
         /// <param name="username">Username of user regis</param>
         /// <param name="password">Password of user</param>
         /// <returns>Return the id of user if user exist</returns>
-        public int Login(string username, string password)
+        public User Login(string username, string password)
         {
             {
                 var user = context.Users.FirstOrDefault(u => u.Name == username && u.Password == password && u.IsActive == true);
@@ -131,10 +131,10 @@ namespace LinusNestorson_WebbShop
                     user.SessionTimer = user.LastRefresh.AddMinutes(15);
                     context.Users.Update(user);
                     context.SaveChanges();
-                    return user.Id;
+                    return user;
                 }
             }
-            return 0;
+            return null;
         }
         /// <summary>
         /// Method for logging out user.
