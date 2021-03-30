@@ -13,10 +13,12 @@ namespace LinusNestorson_WebbShop
     {
         internal static void Main()
         {
-            //var webbShop = new WebbShopAPI();
-            //var adminOptions = new AdminAPI();
+            var webbShop = new WebbShopAPI();
+            var adminOptions = new AdminAPI();
 
-            //Seeder.GenerateData();
+            Seeder.GenerateData();
+
+            adminOptions.DeleteCategory(1, 1);
 
             ////CASE 1:
             //Console.WriteLine("TEST OF NORMAL USER, PRESS [ENTER] TO GO TO NEXT METHOD");
